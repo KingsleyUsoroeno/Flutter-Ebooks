@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ebooks/data/remote/model/books.dart';
+import 'package:flutter_ebooks/screens/widget/custom_search.dart';
 
 class BookDetailScreen extends StatelessWidget {
   final String _dummyText =
@@ -6,78 +8,61 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    final Book book = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Column(
                   children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          prefixIconConstraints: BoxConstraints(minWidth: 23, maxHeight: 20),
-                          prefixIcon: Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                            ),
-                          ),
-                          hintText: "Search eBook",
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.shopping_cart),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 30.0),
-                Text("Blubber", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: "Opensans")),
-                Text("Judy Bloom (Author)", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      width: 170,
-                      height: 235,
-                      color: Colors.pink,
-                    ),
-                    SizedBox(width: 12.0),
+                    CustomSearch(),
+                    SizedBox(height: 30.0),
+                    Text(book.title ?? "Blubber", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: "Opensans")),
+                    Text(book.publisher ?? "Judy Bloom (Author)", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                    SizedBox(height: 10.0),
                     Row(
                       children: <Widget>[
-                        Column(
+                        Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(image: NetworkImage(book.imageLinks.smallThumbnail), fit: BoxFit.cover)),
+                            width: 170,
+                            height: 235),
+                        SizedBox(width: 12.0),
+                        Row(
                           children: <Widget>[
-                            Text("\$200"),
-                            SizedBox(height: 6.0),
-                            _buildRating(),
-                            SizedBox(height: 6.0),
-                            Text("646 Ratings"),
-                            SizedBox(height: 18.0),
-                            _buildCustomBox(icon: Icon(Icons.visibility, size: 20.0), label: "Preview".toUpperCase()),
-                            SizedBox(height: 10.0),
-                            _buildCustomBox(icon: Icon(Icons.star, size: 20.0), label: "WishList".toUpperCase()),
-                            SizedBox(height: 10.0),
-                            _buildCustomBox(icon: Icon(Icons.library_books, size: 20.0), label: "Similar".toUpperCase())
+                            Column(
+                              children: <Widget>[
+                                Text("\$200"),
+                                SizedBox(height: 6.0),
+                                _buildRating(),
+                                SizedBox(height: 6.0),
+                                Text("${book.ratingsCount.toString()}"),
+                                SizedBox(height: 18.0),
+                                _buildCustomBox(icon: Icon(Icons.visibility, size: 20.0), label: "Preview".toUpperCase()),
+                                SizedBox(height: 10.0),
+                                _buildCustomBox(icon: Icon(Icons.star, size: 20.0), label: "WishList".toUpperCase()),
+                                SizedBox(height: 10.0),
+                                _buildCustomBox(icon: Icon(Icons.library_books, size: 20.0), label: "Similar".toUpperCase())
+                              ],
+                            )
                           ],
                         )
                       ],
-                    )
+                    ),
+                    SizedBox(height: 40.0),
+                    Text(book.description ?? _dummyText,
+                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, fontFamily: "Opensans")),
+                    SizedBox(height: 10.0)
                   ],
                 ),
-                SizedBox(height: 40.0),
-                Text(_dummyText, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, fontFamily: "Opensans")),
-                Expanded(
+                /*Expanded(
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Container(
@@ -112,7 +97,7 @@ class BookDetailScreen extends StatelessWidget {
                           ),
                         )),
                   ),
-                )
+                )*/
               ],
             ),
           ),

@@ -1,0 +1,79 @@
+import 'dart:core';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_ebooks/data/remote/model/book_info.dart';
+
+class BookList extends StatelessWidget {
+  final List<BookInfo> bookList;
+  final double parentContainerHeight;
+  final double childContainerWidth;
+  final double childContainerHeight;
+  final _defaultImageUrl =
+      "http://books.google.com/books/content?id=oVvuCAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api";
+
+  BookList({this.bookList, this.parentContainerHeight, this.childContainerWidth, this.childContainerHeight});
+
+  @override
+  Widget build(BuildContext context) {
+    if (bookList == null) {
+      return _buildLoadingIndicator();
+    } else if (bookList != null && bookList.isNotEmpty) {
+      return Container(
+        height: parentContainerHeight,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: bookList != null ? bookList.length : 0,
+          physics: ClampingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, int index) {
+            final book = bookList[index].book;
+            return Padding(
+              padding: EdgeInsets.only(right: 10.0, top: 14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, "bookDetail", arguments: book),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image:
+                              DecorationImage(image: NetworkImage(book.imageLinks.smallThumbnail ?? _defaultImageUrl), fit: BoxFit.cover)),
+                      width: childContainerWidth,
+                      height: childContainerHeight,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  _buildAuthorDetails(name: book.title ?? "Andrew", publisher: book.publisher ?? "No Known Publisher", bookPrice: "400")
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    } else {
+      return Center(
+          child: Container(
+        child: Text("Failed to fetch your E-book please try again"),
+      ));
+    }
+  }
+
+  Widget _buildLoadingIndicator() {
+    return CircularProgressIndicator();
+  }
+
+  Widget _buildAuthorDetails({double width = 100, String name, String publisher, String bookPrice}) {
+    return SizedBox(
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(name, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600), overflow: TextOverflow.ellipsis),
+          Text(publisher, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis),
+          SizedBox(height: 2.0),
+          Text("\$$bookPrice", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.green)),
+        ],
+      ),
+    );
+  }
+}

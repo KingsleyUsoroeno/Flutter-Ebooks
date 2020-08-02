@@ -13,6 +13,7 @@ class HomeScreenViewModel extends ChangeNotifier {
 
   HomeScreenViewModel({this.bookRepository});
 
+  /// Managing My [HomeScreenViewModel] UI State
   /// When App is first loaded [_books] == null show a loading indicator
   /// When its given a value [_books] success response show the data
   /// when the network request fails [_books] is given an empty list show an error state

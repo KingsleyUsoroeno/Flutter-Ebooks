@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_ebooks/screens/book_detail.dart';
 import 'package:flutter_ebooks/screens/categories.dart';
 import 'package:flutter_ebooks/screens/home_screen.dart';
@@ -35,7 +36,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.black26),
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _children,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 8.0,
         type: BottomNavigationBarType.fixed,
@@ -44,14 +51,8 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _currentIndex,
         onTap: onTabTapped,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            title: Text('Categories'),
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), title: Text('Categories')),
           BottomNavigationBarItem(icon: Icon(Icons.star), title: Text('WishList')),
           BottomNavigationBarItem(icon: Icon(Icons.menu), title: Text('More'))
         ],
