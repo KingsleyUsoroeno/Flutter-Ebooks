@@ -2,11 +2,13 @@ import 'package:flutter_ebooks/data/remote/model/books.dart';
 
 class BookInfo {
   Book book;
+  String id;
 
-  BookInfo({this.book});
+  BookInfo({this.id, this.book});
 
   BookInfo.fromJson(Map<String, dynamic> json) {
     book = json['volumeInfo'] != null ? Book.fromJson(json['volumeInfo']) : null;
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -14,11 +16,12 @@ class BookInfo {
     if (this.book != null) {
       data['volumeInfo'] = this.book.toJson();
     }
+    data['id'] = this.id;
     return data;
   }
 
   @override
   String toString() {
-    return 'BookInfo{book: $book}';
+    return 'BookInfo{id:$id book: $book}';
   }
 }

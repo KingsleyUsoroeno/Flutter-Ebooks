@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ebooks/data/remote/model/books.dart';
+import 'package:flutter_ebooks/data/local/db/book_db.dart';
 import 'package:flutter_ebooks/screens/widget/custom_search.dart';
 
 class BookDetailScreen extends StatelessWidget {
@@ -8,7 +8,7 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Book book = ModalRoute.of(context).settings.arguments;
+    final BookDatabaseModelData book = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -30,8 +30,7 @@ class BookDetailScreen extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: NetworkImage(book.imageLinks.smallThumbnail), fit: BoxFit.cover)),
+                            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(book.smallThumbnail), fit: BoxFit.cover)),
                             width: 170,
                             height: 235),
                         SizedBox(width: 12.0),
