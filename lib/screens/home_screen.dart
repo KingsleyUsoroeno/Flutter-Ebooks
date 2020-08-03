@@ -69,19 +69,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildTrendingBookList({HomeScreenViewModel viewModel}) {
     return BookList(
-        viewModel: viewModel,
-        bookCategory: "trending",
-        parentContainerHeight: 290,
-        childContainerWidth: 152,
-        childContainerHeight: 200);
+        viewModel: viewModel, bookCategory: "trending", parentContainerHeight: 290, childContainerWidth: 152, childContainerHeight: 200);
   }
 
   Widget _buildRomanticBookList({HomeScreenViewModel viewModel}) {
     return BookList(
-        viewModel: viewModel,
-        bookCategory: "Romance",
-        parentContainerHeight: 250.0,
-        childContainerWidth: 100,
-        childContainerHeight: 151);
+        viewModel: viewModel, bookCategory: "Romance", parentContainerHeight: 250.0, childContainerWidth: 100, childContainerHeight: 151);
   }
 }
