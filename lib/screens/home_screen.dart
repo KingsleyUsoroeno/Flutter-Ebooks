@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebooks/data/local/home_screen_viewmodel.dart';
+import 'package:flutter_ebooks/data/local/db/book_db.dart';
 import 'package:flutter_ebooks/data/remote/repo/book_repository.dart';
+import 'package:flutter_ebooks/screens/widget/book_list.dart';
 import 'package:flutter_ebooks/screens/widget/custom_search.dart';
-import 'package:flutter_ebooks/screens/widget/romantic_books.dart';
 import 'package:stacked/stacked.dart';
 
+import 'file:///C:/Users/user/AndroidStudioProjects/flutter_ebooks/lib/data/local/view_model/home_screen_viewmodel.dart';
 import 'file:///C:/Users/user/AndroidStudioProjects/flutter_ebooks/lib/data/remote/service/book_api_service.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     final client = BookApiService(dio); // Initialise the client
 
     return ViewModelBuilder<HomeScreenViewModel>.reactive(
-      viewModelBuilder: () => HomeScreenViewModel(bookRepository: BookRepository(bookApi: client)),
+      viewModelBuilder: () => HomeScreenViewModel(bookRepository: BookRepository(bookApi: client), bookDao: BookDatabase().bookDao),
       onModelReady: (model) {
         model.fetchBook(bookName: "trending");
         model.fetchRomanticBooks();
@@ -67,10 +68,20 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildTrendingBookList({HomeScreenViewModel viewModel}) {
-    return BookList(bookList: viewModel.trendingBooks, parentContainerHeight: 290, childContainerWidth: 152, childContainerHeight: 200);
+    return BookList(
+        viewModel: viewModel,
+        bookCategory: "trending",
+        parentContainerHeight: 290,
+        childContainerWidth: 152,
+        childContainerHeight: 200);
   }
 
   Widget _buildRomanticBookList({HomeScreenViewModel viewModel}) {
-    return BookList(bookList: viewModel.romanticBooks, parentContainerHeight: 250.0, childContainerWidth: 100, childContainerHeight: 151);
+    return BookList(
+        viewModel: viewModel,
+        bookCategory: "Romance",
+        parentContainerHeight: 250.0,
+        childContainerWidth: 100,
+        childContainerHeight: 151);
   }
 }
